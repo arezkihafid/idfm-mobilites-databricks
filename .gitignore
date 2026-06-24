@@ -1,0 +1,11 @@
+# Données sources IDFM : volumineuses et soumises à la licence Open Data, non versionnées (cf. README section 3.6)
+data/
+*.zip
+
+# Fichiers temporaires Excel
+~$*.xlsx
+
+# Fichiers Python/OS divers
+__pycache__/
+*.pyc
+.DS_Store

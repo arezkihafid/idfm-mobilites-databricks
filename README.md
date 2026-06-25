@@ -182,52 +182,12 @@ CODE_STIF_TRNS; CODE_STIF_RES; CODE_STIF_LIGNE; LIBELLE_LIGNE; ID_GROUPOFLIGNE; 
 
 ### 3.1 Schéma d'ensemble
 
-```
-┌─────────────────────────────────────────────────────────────────────────────────┐
-│                              SOURCES (Open Data IDFM)                            │
-│  Référentiel arrêts/lignes (Parquet)         Validations télébilletiques         │
-│  - arrets-transporteur, arrets               (CSV/TXT 2015-2024, Parquet 2025+)  │
-│  - zones-d-arrets, zones-de-correspondance   - NB_FER / NB_SURFACE              │
-│  - referentiel-des-lignes, transporteurs     - PROFIL_FER / PROFIL_SURFACE      │
-└───────────────────────────────┬───────────────────────────────────────────────┘
-                                 │  dépôt manuel
-                                 ▼
-                 /Volumes/idfm_mobilites/bronze/landing/...
-                                 │
-┌────────────────────────────────▼──────────────────────────────────────────────┐
-│  BRONZE  — ingestion brute, append-only, traçabilité (_source_file,            │
-│            _ingested_at, _period_label). Aucune transformation métier.        │
-│  bronze.arrets_transporteur, .arrets_reference, .zones_arrets,                │
-│  .zones_correspondance, .lignes, .transporteurs                               │
-│  bronze.frequentation_ferre_raw, .frequentation_surface_raw,                  │
-│  bronze.profil_ferre_raw, .profil_surface_raw                                 │
-└────────────────────────────────┬──────────────────────────────────────────────┘
-                                 │
-┌────────────────────────────────▼──────────────────────────────────────────────┐
-│  SILVER  — schéma stable, dérive de schéma absorbée par coalesce d'alias,     │
-│            dédup "dernière version gagne" (SCD1), nettoyage métier            │
-│  silver.arret_transporteur, .arret_reference, .zone_arrets,                   │
-│  .zone_correspondance, .ligne, .transporteur                                  │
-│  silver.frequentation_ferre, .frequentation_surface,                         │
-│  silver.profil_horaire_ferre, .profil_horaire_surface                        │
-└────────────────────────────────┬──────────────────────────────────────────────┘
-                                 │
-┌────────────────────────────────▼──────────────────────────────────────────────┐
-│  GOLD  — modèle en étoile                                                     │
-│  Dimensions : dim_temps, dim_arret_ou_zone, dim_ligne, dim_transporteur,      │
-│               dim_titre_transport                                            │
-│  Faits      : fait_validation_jour, fait_profil_horaire                      │
-│  Vues KPI   : kpi_validations_mensuelles_par_mode, kpi_top_arrets_ferres,    │
-│               kpi_profil_horaire_moyen                                       │
-└────────────────────────────────┬──────────────────────────────────────────────┘
-                                 │
-                  ┌──────────────┴──────────────┐
-                  ▼                              ▼
-          Dashboards AI/BI                Genie Space (langage naturel)
-          (scopés sur Gold)               (scopé sur Gold, avec garde-fou
-                                            métier sur la portée des données
-                                            de validation)
-```
+![Architecture Data Product IDFM Mobilités](docs/architecture.png)
+
+Flux : dépôt manuel des sources dans `/Volumes/idfm_mobilites/bronze/landing/...` → Bronze (brut,
+append-only) → Silver (schéma stable, dérive de schéma absorbée) → Gold (modèle en étoile) →
+Dashboards AI/BI et Genie Space, tous deux scopés sur Gold avec le garde-fou métier rappelant la
+portée partielle des données de validation.
 
 ### 3.2 Unity Catalog
 

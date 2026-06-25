@@ -235,6 +235,11 @@ IDFM, non géré encore).
   partitionnée par `mode_reseau`, avec une colonne `id_point` qui pointe soit vers un arrêt/zone (ferré) soit
   vers une ligne administrative (surface) selon le mode.
 
+Preuve d'exécution sur le workspace Databricks (compte personnel, Unity Catalog actif) — `SHOW TABLES IN
+idfm_mobilites.gold;` après exécution de bout en bout des notebooks Bronze → Silver → Gold :
+
+![Tables Gold créées sur Databricks](docs/gold_tables_databricks.png)
+
 ### 3.6 Mise en place des données (landing zone)
 
 Les données sources ne sont pas versionnées dans ce repo (volumineuses et soumises à la licence

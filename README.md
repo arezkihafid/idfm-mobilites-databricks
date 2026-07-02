@@ -15,7 +15,7 @@ Repo : `idfm-mobilites-databricks`
 
 Projet interne proposé par le management, dans la continuité d'un projet précédent ("Data Product ENEDIS —
 Ouvrages du réseau de distribution électrique"). Différence majeure cette fois : le management (le manager et
-Baptiste) joue un rôle de **Product Owner purement fonctionnel**, sans connaissance technique de Databricks. La
+le PO) joue un rôle de **Product Owner purement fonctionnel**, sans connaissance technique de Databricks. La
 responsabilité de la conception technique — architecture, ingestion, modélisation, exposition — ainsi que
 l'organisation des ateliers de cadrage technique, revient entièrement à l'équipe technique (moi, dans ce
 projet).
